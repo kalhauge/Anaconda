@@ -1,0 +1,9 @@
+= Anaconda =
+Anaconda is a collection of Utillites to use when developing python application.
+
+== Requirements ==
+Requires the following libraries to be installed in advance.
+* PIL : Python Image Library - http://www.pythonware.com/products/pil/
+* Numpy : http://numpy.scipy.org
+* BitVector : http://pypi.python.org/pypi/bitarray/
+
