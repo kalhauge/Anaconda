@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Anaconda Documentation &mdash; Anaconda 0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Anaconda 0.0 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to Anaconda’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Anaconda’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Anaconda 0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="anaconda-documentation">
+<h1>Anaconda Documentation<a class="headerlink" href="#anaconda-documentation" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-Anaconda"></span><p>This module is called Anaconda</p>
+<div class="section" id="module-Anaconda.Table">
+<span id="table"></span><h2>Table<a class="headerlink" href="#module-Anaconda.Table" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-Table"></span><p>7th August - 2012</p>
+<p>ATable is a class deticated to handeling the loading of tables and accces. If you&#8217;ll need to 
+change the data a AMutableTable class is available.</p>
+<p>Currently the Class support different kinds of CSV format but still not the &#8221; &#8221; notation.</p>
+<dl class="class">
+<dt id="Anaconda.Table.CSVFormat">
+<em class="property">class </em><tt class="descclassname">Anaconda.Table.</tt><tt class="descname">CSVFormat</tt><a class="headerlink" href="#Anaconda.Table.CSVFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is used to format, and interpret CSV strings. It contains 2 options,
+the field delimiter and the line delimiter, that descripes where to split the lines,
+and fields, and how to join them.</p>
+<dl class="method">
+<dt id="Anaconda.Table.CSVFormat.readTable">
+<tt class="descname">readTable</tt><big>(</big><em>content</em><big>)</big><a class="headerlink" href="#Anaconda.Table.CSVFormat.readTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a Table from a string using the field and line delimiter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Anaconda.Table.CSVFormat.setFieldDelimiter">
+<tt class="descname">setFieldDelimiter</tt><big>(</big><em>delimiter</em><big>)</big><a class="headerlink" href="#Anaconda.Table.CSVFormat.setFieldDelimiter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the field delimiter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Anaconda.Table.CSVFormat.setLineDelimiter">
+<tt class="descname">setLineDelimiter</tt><big>(</big><em>delimiter</em><big>)</big><a class="headerlink" href="#Anaconda.Table.CSVFormat.setLineDelimiter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the line delimiter</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Anaconda.Table.CSVFormat.writeColoums">
+<tt class="descname">writeColoums</tt><big>(</big><em>coloums</em><big>)</big><a class="headerlink" href="#Anaconda.Table.CSVFormat.writeColoums" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contatenates a array of fields to a row-string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Anaconda.Table.CSVFormat.writeRows">
+<tt class="descname">writeRows</tt><big>(</big><em>rows</em><big>)</big><a class="headerlink" href="#Anaconda.Table.CSVFormat.writeRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contatenates a array of string representations of row</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Anaconda.Table.CSVFormat.writeTable">
+<tt class="descname">writeTable</tt><big>(</big><em>table</em><big>)</big><a class="headerlink" href="#Anaconda.Table.CSVFormat.writeTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a Table to a string using the field and line delimiter</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Anaconda.Table.ATable">
+<em class="property">class </em><tt class="descclassname">Anaconda.Table.</tt><tt class="descname">ATable</tt><big>(</big><em>header</em><big>)</big><a class="headerlink" href="#Anaconda.Table.ATable" title="Permalink to this definition">¶</a></dt>
+<dd><p>ATable is the main class of this module. It is desinged to be immutable, which
+means that the ATable only functions to read data from the Table. If you want to
+change the data in the table, use the AMutableTable wich is designed for that.</p>
+<dl class="method">
+<dt id="Anaconda.Table.ATable.getFloatArray">
+<tt class="descname">getFloatArray</tt><big>(</big><em>columns</em>, <em>NaN='NA'</em><big>)</big><a class="headerlink" href="#Anaconda.Table.ATable.getFloatArray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Selected columns in numpy ndarray. There is a posibility to set a NaN string value
+this is by default set to &#8216;NA&#8217;.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Anaconda Documentation</a><ul>
+<li><a class="reference internal" href="#module-Anaconda.Table">Table</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Anaconda&#8217;s documentation!</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/doc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Anaconda’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Anaconda 0.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Christian Gram Kalhauge.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
