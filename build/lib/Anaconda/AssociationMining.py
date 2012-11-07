@@ -86,7 +86,7 @@ class AAssociationMining (object):
             
             appearances = self._countAppearances(extension);
             
-            islarger = appearances >= support;
+            islarger = appearances >= support and appearances != 0;
             
             # if the apperances is lower that the minimumSupport,
             # then continue, else add the extension to the self._testQueue
@@ -131,12 +131,9 @@ class AAssociationMapppingTester (unittest.TestCase):
          [0,1,0,1,0,0]
       ];
       self.mapper.setVectors(largeTest);
-      print "start";
       solutions = list(self.mapper.getSolutions());
-      print "done";
       self.assertEqual(1,len(solutions));      
       
 if __name__ == "__main__":
    logging.basicConfig(level=logging.INFO);
-   suite = unittest.TestLoader().loadTestsFromTestCase(TestSequenceFunctions)
-   unittest.TextTestRunner(verbosity=2).run(suite)
+   unittest.main();

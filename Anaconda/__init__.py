@@ -4,4 +4,4 @@
 
 """
 
-__all__ = ['AMath','AssociationMining','SOM','Table']
+__all__ = ['AMath','AssociationMining','SOM','Table','Clustering']
