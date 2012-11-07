@@ -214,6 +214,7 @@ class SOMTester(unittest.TestCase):
       img = SOM.drawHexagonImage(self.som.grid[:,:,0],512);
 #      img.show();
    
+   
    def testGetUMatrix(self):
       self.som.createGrid((10,10),2,True);
       self.som.train([[0,0],[1,0],[0,1],[1,1]],1000);

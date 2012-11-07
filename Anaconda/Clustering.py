@@ -19,7 +19,7 @@ class Clustering():
    pass;
 
 
-def assoiateDataWithCenters(data,centers,sqDistFunction):
+def assoiateDataWithCenters(data,centers,sqDistFunction=AMath.euclideanSqDist):
    # Using bad slow solution:
    if(data.shape[-1] == centers.shape[-1]):
       output = dict();
@@ -30,7 +30,7 @@ def assoiateDataWithCenters(data,centers,sqDistFunction):
          index = np.unravel_index(sqDistFunction(d[i],centers).argmin(),centers.shape[0:-1]);
          if(not index in output):
             output[index] = [];
-         output[index].append(d[i]);
+         output[index].append(i);
       return output;
 
 def getKmeansClusters(data):
