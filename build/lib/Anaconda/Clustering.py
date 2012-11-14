@@ -19,7 +19,7 @@ class Clustering():
    pass;
 
 
-def assoiateDataWithCenters(data,centers,sqDistFunction=AMath.euclideanSqDist):
+def associateDataWithCenters(data,centers,sqDistFunction=AMath.euclideanSqDist):
    # Using bad slow solution:
    if(data.shape[-1] == centers.shape[-1]):
       output = dict();
