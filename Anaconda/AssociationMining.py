@@ -45,22 +45,23 @@ class AAssociationMining (object):
       self._searchStart = [];
       
    def setVectors(self,vectors):
-      log.info("vectors set to {0} x {1} bitarrays".format(len(vectors),len(vectors[0])))
+      log.debug("vectors set to {0} x {1} bitarrays".format(len(vectors),len(vectors[0])))
       self._vectors = [bitarray(vector) for vector in vectors];
       
    def setMinimumSupport(self,minimumSupport):
-      log.info("minimumSupport set to " + str(minimumSupport));
+      log.debug("minimumSupport set to " + str(minimumSupport));
       self._minimumSupport = minimumSupport;
       
    def setMinimumConfidence(self,minimumConfidence):
-      log.info("minimumConfidence set to " + str(minimumConfidence));
+      log.debug("minimumConfidence set to " + str(minimumConfidence));
       self._minimumConfidence = minimumConfidence;
 
-   def addSearchStart(self,indexes):
+   def addSearchStart(self,indices):
       """
       Add a Search Start position to the group to make the computations,
       more efficient. 
       """
+      log.debug("searchStart added indices: " + str(indices));
       self._searchStart.append(indexes);
    
    def _countAppearances(self,vector):
