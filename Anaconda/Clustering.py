@@ -30,17 +30,15 @@ def associateDataWithCenters(data,centers,sqDistFunction=AMath.euclideanSqDist):
    # Using bad slow solution:
    if(data.shape[-1] == centers.shape[-1]):
 
-      centers = [[] for i in range(np.prod(centers.shape[0:2]))];
-      print centers;
+      output = [[] for i in range(np.prod(centers.shape[0:2]))];
+      print output;
       
       vector_size = data.shape[-1];
       d = data.reshape(-1,vector_size);
       for i in range(d.shape[0]):
          index = sqDistFunction(d[i],centers).argmin();
-         if(not index in output):
-            output[index] = [];
-         output[index].append(i);
-      return output;
+         output[index].append(d[i,:]);
+      return [np.array(o) for o in output];
 
 class AgglomerativeClusterAlgorithm:
    """
@@ -163,10 +161,9 @@ class ClusteringTester(unittest.TestCase):
       data = np.array([[1,0],[0,1]]);
       centers = np.array([[[0,0],[0,1]],[[1,0],[1,1]]])
       o = associateDataWithCenters(data,centers,AMath.euclideanSqDist);
-      self.assertEqual(len(o),2);
-      
-      self.assertEquals(o[(1,0)][0],0);
-      self.assertEquals(o[(0,1)][0],1);
+      self.assertEqual(len(o),4);
+      np.testing.assert_equal(o[1][0],data[1]);
+      np.testing.assert_equal(o[2][0],data[0]);
 
    def testAgglomerativeClusterAlgorithm(self):
       a = AgglomerativeClusterAlgorithm()
