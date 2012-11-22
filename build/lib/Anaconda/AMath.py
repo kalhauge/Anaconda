@@ -1,8 +1,3 @@
-import math
-import sys
-import unittest
-import numpy as np
-
 """
 Name: AMath
 Author: Christian Gram Kalhauge : kalhauge@cbs.dtu.dk 
@@ -11,6 +6,33 @@ Date : 14th September - 2012
 Math is a collection of methods used in math.
 
 """
+
+import math
+import sys
+import unittest
+import numpy as np
+
+def calculateStatistics(vectors):
+   """
+   returns number of values pr column, the mean of each colloum
+   and the stdartd diviration of each column
+
+   returns (values_pr_coloum,mean,stddiv);
+   """
+   values_pr_column = (vectors.shape[0] - np.isnan(vectors).sum(0));
+
+   mean = np.nan_to_num(vectors).sum(0)
+   mean[values_pr_row != 0] /= values_pr_column[values_pr_column != 0];
+   mean[values_pr_row == 0] = np.nan;
+   
+   sqrdmean = (np.nan_to_num(vectors)**2).sum(0);
+   sqrdmean[values_pr_row != 0] /= values_pr_column[values_pr_column != 0];
+   sqrdmean[values_pr_row == 0] = np.nan;
+   
+   stddiv = np.sqrt(sqrdmean - mean**2)
+
+   return (values_pr_column,mean,stddiv);
+
 
 def gammalog(n):
    return math.log(math.factorial(n-1));
@@ -25,19 +47,26 @@ def binomial(n,k):
 def hypergeometric(k,G,n,N):
    return math.exp(binomiallog(G,k) + binomiallog(N-G,n-k) - binomiallog(N,n));
 
-def euclideanSqDist(data,grid):
-   not_nan = ~np.isnan(data);
-   number = not_nan.sum();
-   # sys.stderr.write("{}\n".format(type(not_nan)));
-   # sys.stderr.write("{}\n".format(type(data)));
-   # sys.stderr.write("{}\n".format(type(grid)));
-   # 
-   # sys.stderr.write("{}\n".format(data[not_nan]));
-   # sys.stderr.write("{}\n".format(grid[...,not_nan]));
+def createMatrix(vectors):
+   if vectors.ndim != 2:
+      vectors = np.reshape(vectors,(-1,vectors.shape[-1]));
+   return vectors;
    
-   ndir = data[not_nan] - grid[...,not_nan];
-   return np.sum(ndir*ndir,-1) * data.shape[0] / number;
+def euclideanSqDist(data,grid):
+   """
+   Returns the distance from one np_array to all
+   vectors in the grid, the input is any compination of array and matrix
+   """
+   
+   d = createMatrix(data);
+   g = createMatrix(grid);
+   di,gi = np.mgrid[0:d.shape[0],0:g.shape[0]];
+   ndir = d[di,:] - g[gi,:];
+   number = np.sum(~np.isnan(ndir),-1);
+   return np.sum(np.nan_to_num(ndir*ndir),-1) * d.shape[-1] / number;
 
+
+   
 def gaussian(pos,matrix,shift=None):
  #   pos = pos.reshape((pos.shape[0],-1));
  #  
@@ -92,7 +121,16 @@ class MathTester (unittest.TestCase):
       self.assertTrue((euclideanSqDist(a,test2) == np.array([4.0,16.0,36.0])).all());
       
       test3 = np.array([[[0,1,24,3],[-1,0,24,2],[-2,-1,24,1]],[[0,1,24,3],[-1,0,24,2],[-2,-1,24,1]],[[0,1,24,3],[-1,0,24,2],[-2,-1,24,1]]]);
-      self.assertTrue((euclideanSqDist(a,test3) == np.array([[4.0,16.0,36.0],[4.0,16.0,36.0],[4.0,16.0,36.0]])).all());
+      self.assertTrue((euclideanSqDist(a,test3) == np.array([[4.0,16.0,36.0,4.0,16.0,36.0,4.0,16.0,36.0]])).all());
+
+   def testEuclideanSqDistAddvanced(self):
+      a = np.array([[0,0,np.nan,0],[1,1,1,1]]);
+      test = np.array([[0.5,np.nan,0.5,0.5],[1.5,1.5,1.5,1.5]]);
+
+   def testCreateMatrix(self):
+      self.assertEquals(createMatrix(np.array([1,2,3,4])).ndim,2);
+      self.assertEquals(createMatrix(np.array([[1,2,3,4],[5,6,7,8]])).ndim,2);
+      self.assertEquals(createMatrix(np.array([[[1,2,3,4],[5,6,7,8]],[[9,10,11,12],[13,14,15,16]]])).ndim,2);
    
    def testGaussian(self):
       array =np.mgrid[-1:2,-1:2];

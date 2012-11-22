@@ -47,13 +47,19 @@ def binomial(n,k):
 def hypergeometric(k,G,n,N):
    return math.exp(binomiallog(G,k) + binomiallog(N-G,n-k) - binomiallog(N,n));
 
+def createMatrix(vectors):
+   if vectors.ndim != 2:
+      vectors = np.reshape(vectors,(-1,vectors.shape[-1]));
+   return vectors;
+   
 def euclideanSqDist(data,grid):
    """
    Returns the distance from one np_array to all
    vectors in the grid, the input is any compination of array and matrix
    """
-   d = data if data.ndim == 2 else np.reshape(data,(-1,data.shape[-1]));
-   g = grid if grid.ndim == 2 else np.reshape(grid,(-1,grid.shape[-1]));
+   
+   d = createMatrix(data);
+   g = createMatrix(grid);
    di,gi = np.mgrid[0:d.shape[0],0:g.shape[0]];
    ndir = d[di,:] - g[gi,:];
    number = np.sum(~np.isnan(ndir),-1);
@@ -120,8 +126,12 @@ class MathTester (unittest.TestCase):
    def testEuclideanSqDistAddvanced(self):
       a = np.array([[0,0,np.nan,0],[1,1,1,1]]);
       test = np.array([[0.5,np.nan,0.5,0.5],[1.5,1.5,1.5,1.5]]);
-      print euclideanSqDist(a,test);
-      
+
+   def testCreateMatrix(self):
+      self.assertEquals(createMatrix(np.array([1,2,3,4])).ndim,2);
+      self.assertEquals(createMatrix(np.array([[1,2,3,4],[5,6,7,8]])).ndim,2);
+      self.assertEquals(createMatrix(np.array([[[1,2,3,4],[5,6,7,8]],[[9,10,11,12],[13,14,15,16]]])).ndim,2);
+   
    def testGaussian(self):
       array =np.mgrid[-1:2,-1:2];
 #      print array
