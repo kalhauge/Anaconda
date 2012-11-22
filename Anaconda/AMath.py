@@ -22,12 +22,12 @@ def calculateStatistics(vectors):
    values_pr_column = (vectors.shape[0] - np.isnan(vectors).sum(0));
 
    mean = np.nan_to_num(vectors).sum(0)
-   mean[values_pr_row != 0] /= values_pr_column[values_pr_column != 0];
-   mean[values_pr_row == 0] = np.nan;
+   mean[values_pr_column != 0] /= values_pr_column[values_pr_column != 0];
+   mean[values_pr_column == 0] = np.nan;
    
    sqrdmean = (np.nan_to_num(vectors)**2).sum(0);
-   sqrdmean[values_pr_row != 0] /= values_pr_column[values_pr_column != 0];
-   sqrdmean[values_pr_row == 0] = np.nan;
+   sqrdmean[values_pr_column != 0] /= values_pr_column[values_pr_column != 0];
+   sqrdmean[values_pr_column == 0] = np.nan;
    
    stddiv = np.sqrt(sqrdmean - mean**2)
 
@@ -131,6 +131,14 @@ class MathTester (unittest.TestCase):
       self.assertEquals(createMatrix(np.array([1,2,3,4])).ndim,2);
       self.assertEquals(createMatrix(np.array([[1,2,3,4],[5,6,7,8]])).ndim,2);
       self.assertEquals(createMatrix(np.array([[[1,2,3,4],[5,6,7,8]],[[9,10,11,12],[13,14,15,16]]])).ndim,2);
+
+   def testCalculateStatistics(self):
+      data = np.array([[1,1,1],[np.nan,0,0],[-1,-1,-1]]);
+      (vpc,mean,stddiv) = calculateStatistics(data);
+      np.testing.assert_equal(vpc,[2,3,3]);
+      np.testing.assert_almost_equal(mean,[0,0,0]);
+      np.testing.assert_almost_equal(stddiv,[1,0.8164965,0.8164965]);
+      
    
    def testGaussian(self):
       array =np.mgrid[-1:2,-1:2];
