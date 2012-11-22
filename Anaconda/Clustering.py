@@ -31,7 +31,6 @@ def associateDataWithCenters(data,centers,sqDistFunction=AMath.euclideanSqDist):
    if(data.shape[-1] == centers.shape[-1]):
 
       output = [[] for i in range(np.prod(centers.shape[0:2]))];
-      print output;
       
       vector_size = data.shape[-1];
       d = data.reshape(-1,vector_size);
