@@ -11,6 +11,8 @@ setup(name='Anaconda',
          'Anaconda.Table',
          'Anaconda.__init__',
          'Anaconda.SOM',
-         'Anaconda.AMath'],
+         'Anaconda.AMath',
+         'Anaconda.AGraphics'
+      ],
       )
       

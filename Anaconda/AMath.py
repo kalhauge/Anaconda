@@ -34,6 +34,14 @@ def calculateStatistics(vectors):
    return (values_pr_column,mean,stddiv);
 
 
+def normalizeData(grid,between=(0,1)):
+   not_nans = ~np.isnan(grid);
+   minimum = np.min(grid[not_nans]);
+   maximum = np.max(grid[not_nans]);
+   res = (grid - minimum) / ( maximum - minimum ) * (between[1] - between[0]) + between[0];
+   return res;
+
+   
 def gammalog(n):
    return math.log(math.factorial(n-1));
 
@@ -138,7 +146,11 @@ class MathTester (unittest.TestCase):
       np.testing.assert_equal(vpc,[2,3,3]);
       np.testing.assert_almost_equal(mean,[0,0,0]);
       np.testing.assert_almost_equal(stddiv,[1,0.8164965,0.8164965]);
-      
+
+   def testNormalizeData(self):
+      data = np.array([[1,1,1],[np.nan,0,0],[-1,-1,-1]]);
+      normalizeData(data);
+      ##TODO: do test later.
    
    def testGaussian(self):
       array =np.mgrid[-1:2,-1:2];
