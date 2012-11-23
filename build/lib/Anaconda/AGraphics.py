@@ -11,12 +11,13 @@ import AMath
 import Image, ImageDraw, ImageFont
 import numpy as np
 
-def drawHexagonImage(values,min_size,labels=None,fontpath=None):
+def drawHexagonImage(values,min_size,labels=None,fontpath=None,normfunction=AMath.normalizeData):
    """
    Draws a Image using the data as hexagons. If the data
    is np.nan. It is posible to assing labels. Labels must corespond in
    size with the values.
    """
+   values = normfunction(values);
    scale = 128;
    (x_size,y_size) = values.shape;
    (xs,ys) = np.mgrid[0:x_size,0:y_size];

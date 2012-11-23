@@ -81,8 +81,10 @@ class SOM:
       if self.isHexagon:
          log.debug("Outputing images with hexagons");
          if fontpath is not None:
-            labels = [["({},{})".format(x,y) for y in range(grid.shape[1])] for x in range(grid.shape[0])];
-            print labels;
+            labels = [["({},{}):{}"\
+                       .format(x,y,np.ravel_multi_index((x,y),self.grid.shape[0:2]))\
+                       for y in range(self.grid.shape[1])]\
+                      for x in range(self.grid.shape[0])];
          else:
             labels = None;
          return [AGraphics.drawHexagonImage(self.grid[:,:,i],size,labels=labels,fontpath=fontpath) for i in range(self.vector_size)]
@@ -142,10 +144,19 @@ class SOM:
          
          umatrix = 1 - umatrix/umax;
 
+         def formatFeild(x,y):
+            s = "({},{}):{}".format(x/2,y/2,np.ravel_multi_index((x/2,y/2),self.grid.shape[0:2]));
+            if x % 4 == 0 and y % 2 == 0:
+               return s;
+            elif (x + 2) % 4 == 0 and y % 2 == 1:
+               return s;
+            else:
+               return '';
+         
          if fontpath is not None:
-            labels = [\
-                      ["({},{})".format(x,y) for y in range(grid.shape[1])]\
-                      for x in range(grid.shape[0])\
+            labels = [[formatFeild(x,y)\
+                       for y in range(self.grid.shape[1]*2 )  ]\
+                      for x in range(self.grid.shape[0]*2 -1)\
                      ];
          else:
             labels = None;
@@ -178,15 +189,18 @@ class SOMTester(unittest.TestCase):
    def testSimpleImages(self):
       self.som.createGrid((10,10),2,True);
       self.som.train([[0,0],[1,0],[0,1],[1,1]],1000);
-      imgs = self.som.getGridAsImages(512);
-      imgs[0].show();
+      imgs = self.som.getGridAsImages(512,"/Library/Fonts/Arial Bold.ttf");
+      print imgs;
+#      imgs[0].show();
+      print "Showing img 1"
 #      imgs[1].show();
+      print "Showing img 2"
    
    def testGetUMatrix(self):
       self.som.createGrid((10,10),2,True);
       self.som.train([[0,0],[1,0],[0,1],[1,1]],1000);
-      img = self.som.getUMatrixImage(512);
- #     img.show();
+      img = self.som.getUMatrixImage(512,"/Library/Fonts/Arial Bold.ttf");
+      img.show();
       
       imgs = self.som.getGridAsImages(512);
  #     imgs[0].show();
