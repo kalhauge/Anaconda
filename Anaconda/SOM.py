@@ -2,7 +2,7 @@ import time
 import numpy as np
 import unittest
 import logging
-import Image,ImageDraw
+import Image,ImageDraw, ImageFont
 import AMath
 
 log = logging.getLogger(__name__)
@@ -83,7 +83,6 @@ class SOM:
       
       # finding centers.
       (c_xs,c_ys) = (xs*scale*0.8660254038 + scale ,ys*scale + scale);
-      
       c_ys[0:y_size:2] = np.float64(c_ys[0:y_size:2]) - ( 0.25* scale)
       c_ys[1:y_size:2] = np.float64(c_ys[1:y_size:2]) + ( 0.25* scale)
       
@@ -94,12 +93,15 @@ class SOM:
          hexa_o_y[r] = (c_ys + np.sin(r*np.pi/3)*scale/2/0.8560254038);
          hexa_x[r] = (c_xs + np.cos(r*np.pi/3)*scale/2/0.9);
          hexa_y[r] = (c_ys + np.sin(r*np.pi/3)*scale/2/0.9);
-      
+
+
+      font = ImageFont.truetype("/Library/Fonts/Arial Bold.ttf", 32);
       size = (int(x_size*scale* 0.8660254038+scale),y_size*scale+scale);
       img = Image.new("L",size,255);
       d = ImageDraw.Draw(img);
       for (x,y) in np.nditer([xs,ys]):
          a = []
+         color =values[x,y]*255;
          if(not np.isnan(values[x,y])):  
             for r in xrange(6):
                a.append((hexa_o_x[r][x,y],hexa_o_y[r][x,y]));
@@ -107,23 +109,36 @@ class SOM:
             a = []
             for r in xrange(6):
                a.append((hexa_x[r][x,y],hexa_y[r][x,y]));
-            d.polygon(a,fill=values[x,y]*255);
+            d.polygon(a,fill=color);
+
+        
+         s = str((int(x),int(y)));
+         w,h = font.getsize(s);
+         v = (c_xs[x,y] - w/2, \
+              c_ys[x,y] - h/2);
+         d.text(v,s,font=font,fill=255 if color < 128 else 0);
       
       a = min(float(size[0])/min_size,float(size[1])/min_size);
       size = (int(size[0]/a),int(size[1]/a));
       
       return img.resize(size,Image.ANTIALIAS)
 
+   @staticmethod
+   def getNormalizedGrid(grid):
+      minimum = np.min(grid);
+      maximum = np.max(grid);
+      res = (grid - minimum) / ( maximum - minimum );
+      return res;
    
    def getGridAsImages(self,size):
       if self.isHexagon:
          log.debug("Outputing images with hexagons");
-         return [SOM.drawHexagonImage(self.grid[:,:,i],size) for i in range(self.vector_size)]
+         return [SOM.drawHexagonImage(SOM.getNormalizedGrid(self.grid[:,:,i]),size) for i in range(self.vector_size)]
       else:
          log.debug("Outputing images with squares");
          imgs = [];
          for i in xrange(self.vector_size):
-            img = Image.fromarray(np.uint8(self.grid[:,:,i]*255));
+            img = Image.fromarray(np.uint8(SOM.getNormalizedGrid(self.grid[:,:,i])*255));
             imgs.append(img.resize(size,Image.NEAREST));
          return imgs;
 
@@ -211,19 +226,19 @@ class SOMTester(unittest.TestCase):
    def testDrawHexagonImage(self):
       self.som.createGrid((10,10),2,True);
       self.som.train([[0,0],[1,0],[0,1],[1,1]],1000);
-      img = SOM.drawHexagonImage(self.som.grid[:,:,0],512);
-#      img.show();
+      img = SOM.drawHexagonImage(SOM.getNormalizedGrid(self.som.grid[:,:,0]),512);
+      img.show();
    
    
    def testGetUMatrix(self):
       self.som.createGrid((10,10),2,True);
       self.som.train([[0,0],[1,0],[0,1],[1,1]],1000);
       img = self.som.getUMatrixImage(512);
-      img.show();
+ #     img.show();
       
       imgs = self.som.getGridAsImages(512);
-      imgs[0].show();
-      imgs[1].show();
+ #     imgs[0].show();
+ #     imgs[1].show();
       
       
 if __name__ == "__main__":
