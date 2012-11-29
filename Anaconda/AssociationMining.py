@@ -62,7 +62,7 @@ class AAssociationMining (object):
       more efficient. 
       """
       log.debug("searchStart added indices: " + str(indices));
-      self._searchStart.append(indexes);
+      self._searchStart.append(indices);
    
    def _countAppearances(self,vector):
       """

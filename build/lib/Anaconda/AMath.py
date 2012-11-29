@@ -28,8 +28,16 @@ def calculateStatistics(vectors):
    sqrdmean = (np.nan_to_num(vectors)**2).sum(0);
    sqrdmean[values_pr_column != 0] /= values_pr_column[values_pr_column != 0];
    sqrdmean[values_pr_column == 0] = np.nan;
-   
-   stddiv = np.sqrt(sqrdmean - mean**2)
+
+   stddiv = np.zeros(values_pr_column.shape);
+   temp = sqrdmean[values_pr_column != 0] - mean[values_pr_column != 0]**2;
+ #  print "mean", mean
+ #  print "sqrd", sqrdmean
+ #  print "temp", temp
+   stddiv[values_pr_column != 0] = np.sqrt(temp)
+   stddiv[values_pr_column == 0] = np.nan 
+
+  # print "stddiv : {}, mean {}, sqrdmean {}".format(stddiv,mean,sqrdmean);
 
    return (values_pr_column,mean,stddiv);
 
