@@ -30,14 +30,16 @@ def associateDataWithCenters(data,centers,sqDistFunction=AMath.euclideanSqDist):
    # Using bad slow solution:
    if(data.shape[-1] == centers.shape[-1]):
 
-      output = [[] for i in range(np.prod(centers.shape[0:2]))];
+      output = [([],[]) for i in range(np.prod(centers.shape[0:2]))];
       
       vector_size = data.shape[-1];
       d = data.reshape(-1,vector_size);
       for i in range(d.shape[0]):
          index = sqDistFunction(d[i],centers).argmin();
-         output[index].append(d[i,:]);
-      return [np.array(o) for o in output];
+         (id, data) = output[index];
+         id.append(i);
+         data.append((d[i,:]));
+      return [(id,np.array(o)) for (id,o) in output];
 
 class AgglomerativeClusterAlgorithm:
    """

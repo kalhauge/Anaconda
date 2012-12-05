@@ -31,13 +31,8 @@ def calculateStatistics(vectors):
 
    stddiv = np.zeros(values_pr_column.shape);
    temp = sqrdmean[values_pr_column != 0] - mean[values_pr_column != 0]**2;
- #  print "mean", mean
- #  print "sqrd", sqrdmean
- #  print "temp", temp
    stddiv[values_pr_column != 0] = np.sqrt(temp)
    stddiv[values_pr_column == 0] = np.nan 
-
-  # print "stddiv : {}, mean {}, sqrdmean {}".format(stddiv,mean,sqrdmean);
 
    return (values_pr_column,mean,stddiv);
 
