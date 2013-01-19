@@ -158,6 +158,9 @@ class ATable (object):
       table._hasHeader = self._hasHeader;
       table._rows = self._rows;
       return table
+
+   def __iter__(self):
+      return iter(self._rows);
    
    def getRows(self):
       for row in self._rows:
