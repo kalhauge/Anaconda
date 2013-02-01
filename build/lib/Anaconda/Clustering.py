@@ -22,9 +22,16 @@ class Clustering():
 
 def associateDataWithCenters(data,centers,sqDistFunction=AMath.euclideanSqDist):
    """
-   Associates the data vectors with centers.
-   returns an one dimentional list corresponding to the centers containing the
-   matrix of the of lists.  
+   Associates the data vectors with centers. Takes the arguments:
+   
+   [data] which is a list of vertex information of length N.
+
+   [centers] which is a list of vectors of length N, whom sybolizes the centers of
+   the clusters.
+   
+   The output is a list of tubles of the same length than the number of
+   clusters. Each tuble contains a list of indicies, and the information of
+   the indicies.
    """
    
    # Using bad slow solution:
