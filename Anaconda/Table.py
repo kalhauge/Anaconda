@@ -70,7 +70,7 @@ class CSVFormat (object):
    
     def writeColoums(self,coloums):
         """Contatenates a array of fields to a row-string"""
-        return self._fieldDelimiter.join([self._formatter(a) for c in coloums]);
+        return self._fieldDelimiter.join([self._formatter(c) for c in coloums]);
       
     def writeRows(self,rows):
         """Contatenates a array of string representations of row"""
