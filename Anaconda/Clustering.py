@@ -160,7 +160,8 @@ class AgglomerativeClusterAlgorithm:
    def getClusters(self,level):
        label = []
        def addToLabel(layer,node):
-           if layer == level: label.append(node.index);
+           if layer == level or node.A is None or node.B is None: 
+              label.append(node.index);
        self.itterateDendrogram(addToLabel);
        return label; 
 
