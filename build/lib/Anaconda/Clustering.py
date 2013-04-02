@@ -54,13 +54,14 @@ class AgglomerativeClusterAlgorithm:
    """
    class AgglomerativeClusterNode:
 
-      def __init__(self,vectors,sqDistFunction,A=None,B=None):
+      def __init__(self,index,vectors,sqDistFunction,A=None,B=None):
           """
           Vectors is a matrix of vectores.
           """
           vectors = AMath.createMatrix(vectors);
           self.cluster = vectors;
           self.size = vectors.shape[0];
+          self.index = index;
           if self.size == 1:
              self.avg_dist = 0;
              self.centroid = vectors[0];
@@ -102,8 +103,11 @@ class AgglomerativeClusterAlgorithm:
       set before calling this method. 
       """
       self._startingClusters = [];
+      index = 0;
       for cluster in clusters:
-          self._startingClusters.append(self.AgglomerativeClusterNode(cluster,self._sqDistFunction));
+          self._startingClusters.append(\
+                self.AgglomerativeClusterNode([index],cluster,self._sqDistFunction));
+          index += 1;
 
    def createDendrogram(self):
       """
@@ -127,6 +131,7 @@ class AgglomerativeClusterAlgorithm:
                   break;
 
          a = self.AgglomerativeClusterNode(
+            np.concatenate([best_pair[1].index,best_pair[2].index]),
             np.vstack((best_pair[1].cluster,best_pair[2].cluster)),
             self._sqDistFunction,
             best_pair[1],
@@ -152,13 +157,22 @@ class AgglomerativeClusterAlgorithm:
       if(node.B != None):
          self.itterateDendrogram(function,node.B,layer +1);
 
+   def getClusters(self,level):
+       label = []
+       def addToLabel(layer,node):
+           if layer == level: label.append(node.index);
+       self.itterateDendrogram(addToLabel);
+       return label; 
+
 def printDendrogram(layer,node):
    layer_str = ''.join(['| ' for i in range(layer -1 )]) + '+-+ '+ str(layer);
-   cluster_str = layer_str + '\n' + str(node.cluster);
+   cluster_str = layer_str + '\n' + str(node.index);
    cluster_str = ''.join(['| ' for i in range(layer)]) + '\n' + \
                  cluster_str.replace('\n','\n' + ''.join(['| ' for i in range(layer+1)])) + '\n' ;
    
    sys.stdout.write(cluster_str);
+
+   
    
 class ClusteringTester(unittest.TestCase):
    
@@ -170,8 +184,8 @@ class ClusteringTester(unittest.TestCase):
       centers = np.array([[[0,0],[0,1]],[[1,0],[1,1]]])
       o = associateDataWithCenters(data,centers,AMath.euclideanSqDist);
       self.assertEqual(len(o),4);
-      np.testing.assert_equal(o[1][0],data[1]);
-      np.testing.assert_equal(o[2][0],data[0]);
+      np.testing.assert_equal(o[1][0],[1]);
+      np.testing.assert_equal(o[2][0],[0]);
 
    def testAgglomerativeClusterAlgorithm(self):
       a = AgglomerativeClusterAlgorithm()
