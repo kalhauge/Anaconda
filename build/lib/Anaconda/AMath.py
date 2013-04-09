@@ -19,6 +19,8 @@ def calculateStatistics(vectors):
 
    returns (values_pr_coloum,mean,stddiv);
    """
+   if vectors.shape[0] == 0: 
+      return (np.array([]),np.array([]),np.array([]));
    values_pr_column = (vectors.shape[0] - np.isnan(vectors).sum(0));
 
    mean = np.nan_to_num(vectors).sum(0)
@@ -149,6 +151,10 @@ class MathTester (unittest.TestCase):
       np.testing.assert_equal(vpc,[2,3,3]);
       np.testing.assert_almost_equal(mean,[0,0,0]);
       np.testing.assert_almost_equal(stddiv,[1,0.8164965,0.8164965]);
+
+   def testCalculateStatistics2(self):
+      data = np.array([])
+      (vpc,mean,stddiv) = calculateStatistics(data);
 
    def testNormalizeData(self):
       data = np.array([[1,1,1],[np.nan,0,0],[-1,-1,-1]]);
