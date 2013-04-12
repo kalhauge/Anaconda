@@ -157,14 +157,23 @@ class AgglomerativeClusterAlgorithm:
       if(node.B != None):
          self.itterateDendrogram(function,node.B,layer +1);
 
-   def getClusters(self,level):
-       label = []
-       def addToLabel(layer,node):
-           if layer == level or node.A is None or node.B is None: 
-              label.append(node.index);
-       self.itterateDendrogram(addToLabel);
-       return label; 
+   def cutDendrogram(self,number):
+       if len(self._dendrogram.index) <= number:
+           return self._dendrogram.index
+       nodes = [self._dendrogram];
+       while len(nodes) < number:
+         # Find worst node and split
+         node = max([n for n in nodes if n.avg_dist != 0],
+                  key=lambda x: self._clusterFitFunction(x.A,x.B,
+                  self._sqDistFunction))
+         nodes.remove(node);
+       
+         nodes.extend([node.A,node.B]);
+         # spilt it
+       return nodes;
 
+   def getClusters(self,number):
+       return [n.index for n in self.cutDendrogram(number)];
 def printDendrogram(layer,node):
    layer_str = ''.join(['| ' for i in range(layer -1 )]) + '+-+ '+ str(layer);
    cluster_str = layer_str + '\n' + str(node.index);
